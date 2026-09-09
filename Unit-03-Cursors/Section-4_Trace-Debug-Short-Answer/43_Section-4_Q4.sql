@@ -1,11 +1,11 @@
 SET SERVEROUTPUT ON;
 
 -- Answer:
--- If a parameterised cursor has no DEFAULT value, OPEN c_book; without
--- supplying the required argument causes PLS-00306 (wrong number or types
--- of arguments) at execution/compile-time checking of the OPEN statement.
--- If the parameter has a DEFAULT value, the cursor can be opened without
--- an argument and the default value is used.
+-- Without a DEFAULT value, omitting the required parameter in OPEN c_book;
+-- produces PLS-00306 (wrong number or types of arguments).
+-- This is detected at compilation when the OPEN statement is compiled.
+-- With a DEFAULT value, the cursor can be opened without an argument and
+-- Oracle uses the default parameter value.
 
 DECLARE
     CURSOR c_book (p_cat VARCHAR2 DEFAULT 'Database') IS
