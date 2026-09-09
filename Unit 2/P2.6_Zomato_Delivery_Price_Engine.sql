@@ -27,21 +27,10 @@ BEGIN
     IF v_food_total > 499 THEN
         v_final_delivery := 0;
     ELSE
-        IF v_rain = 'Y' THEN
-            v_rain_charge := v_base * 0.20;
-        END IF;
-
-        IF v_late_night = 'Y' THEN
-            v_night_charge := v_base * 0.15;
-        END IF;
-
-        IF v_festival = 'Y' THEN
-            v_festival_charge := v_base * 0.10;
-        END IF;
-
-        IF v_peak_hour = 'Y' THEN
-            v_peak_charge := v_base * 0.10;
-        END IF;
+        v_rain_charge := CASE WHEN v_rain = 'Y' THEN v_base * 0.20 ELSE 0 END;
+        v_night_charge := CASE WHEN v_late_night = 'Y' THEN v_base * 0.15 ELSE 0 END;
+        v_festival_charge := CASE WHEN v_festival = 'Y' THEN v_base * 0.10 ELSE 0 END;
+        v_peak_charge := CASE WHEN v_peak_hour = 'Y' THEN v_base * 0.10 ELSE 0 END;
 
         v_final_delivery := v_base + v_rain_charge + v_night_charge + v_festival_charge + v_peak_charge;
 
