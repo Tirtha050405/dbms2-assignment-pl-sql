@@ -17,13 +17,15 @@ DECLARE
     v_prime BOOLEAN;
     v_count NUMBER := 0;
     v_last_fib NUMBER := 0;
+    v_i NUMBER;
 BEGIN
     DBMS_OUTPUT.PUT_LINE('===== PART A: FIBONACCI =====');
-    FOR i IN 1..v_n LOOP
-        IF i = 1 THEN
+    v_i := 1;
+    WHILE v_i <= v_n LOOP
+        IF v_i = 1 THEN
             v_last_fib := v_fib1;
             DBMS_OUTPUT.PUT(v_fib1 || ' ');
-        ELSIF i = 2 THEN
+        ELSIF v_i = 2 THEN
             v_last_fib := v_fib2;
             DBMS_OUTPUT.PUT(v_fib2 || ' ');
         ELSE
@@ -33,6 +35,7 @@ BEGIN
             v_last_fib := v_next;
             DBMS_OUTPUT.PUT(v_next || ' ');
         END IF;
+        v_i := v_i + 1;
     END LOOP;
     DBMS_OUTPUT.NEW_LINE;
     DBMS_OUTPUT.PUT_LINE('Nth Fibonacci Number: ' || v_last_fib);
@@ -59,7 +62,9 @@ BEGIN
     END IF;
 
     DBMS_OUTPUT.PUT_LINE('===== PART C: PRIMES 1 TO 100 =====');
-    FOR v_num IN 2..100 LOOP
+    v_num := 2;
+    v_count := 0;
+    WHILE v_num <= 100 LOOP
         v_prime := TRUE;
         v_x := 2;
         WHILE v_x <= TRUNC(SQRT(v_num)) LOOP
@@ -74,6 +79,7 @@ BEGIN
             DBMS_OUTPUT.PUT(v_num || ' ');
             v_count := v_count + 1;
         END IF;
+        v_num := v_num + 1;
     END LOOP;
     DBMS_OUTPUT.NEW_LINE;
     DBMS_OUTPUT.PUT_LINE('Prime Count: ' || v_count);
