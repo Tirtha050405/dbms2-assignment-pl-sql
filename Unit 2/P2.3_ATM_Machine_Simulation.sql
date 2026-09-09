@@ -39,13 +39,13 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('Error: Invalid choice.');
         END IF;
 
-        EXIT WHEN v_choice = 3 OR v_balance = 0 OR v_iteration >= 4;
+        EXIT WHEN v_choice = 3 OR v_balance = 0;
 
         IF v_iteration = 1 THEN
             v_withdraw := 1000;
         ELSIF v_iteration = 2 THEN
             v_withdraw := 500;
-        ELSE
+        ELSIF v_iteration = 3 THEN
             v_choice := 3;
         END IF;
     END LOOP;
