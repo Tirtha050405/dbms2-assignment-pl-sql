@@ -1,28 +1,23 @@
 SET SERVEROUTPUT ON;
 
 DECLARE
-    v_roll_no NUMBER := 43;
-    v_marks NUMBER := 86;
-    v_a NUMBER := 20;
-    v_b NUMBER := 10;
+    v_employee_id NUMBER := 100 + MOD(43, 9) + 1;
+    v_first_name employees.first_name%TYPE;
+    v_last_name employees.last_name%TYPE;
+    v_salary employees.salary%TYPE;
+    v_job_id employees.job_id%TYPE;
+    v_department_id employees.department_id%TYPE;
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Arithmetic Operators:');
-    DBMS_OUTPUT.PUT_LINE('Addition: ' || (v_a + v_b));
-    DBMS_OUTPUT.PUT_LINE('Subtraction: ' || (v_a - v_b));
-    DBMS_OUTPUT.PUT_LINE('Multiplication: ' || (v_a * v_b));
-    DBMS_OUTPUT.PUT_LINE('Division: ' || (v_a / v_b));
-    DBMS_OUTPUT.PUT_LINE('Modulus: ' || MOD(v_a, v_b));
+    SELECT first_name, last_name, salary, job_id, department_id
+    INTO v_first_name, v_last_name, v_salary, v_job_id, v_department_id
+    FROM employees
+    WHERE employee_id = v_employee_id;
 
-    DBMS_OUTPUT.PUT_LINE('Relational Operators:');
-    IF v_marks >= 50 THEN
-        DBMS_OUTPUT.PUT_LINE('Marks are greater than or equal to 50');
-    END IF;
-
-    DBMS_OUTPUT.PUT_LINE('Logical Operators:');
-    IF v_roll_no > 0 AND v_marks > 0 THEN
-        DBMS_OUTPUT.PUT_LINE('Roll number and marks are valid');
-    END IF;
-
-    DBMS_OUTPUT.PUT_LINE('Concatenation: Tirtha Brahmbhatt - Roll No: ' || v_roll_no);
+    DBMS_OUTPUT.PUT_LINE('===== EMPLOYEE DATA FETCHER =====');
+    DBMS_OUTPUT.PUT_LINE('Employee ID: ' || v_employee_id);
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_first_name || ' ' || v_last_name);
+    DBMS_OUTPUT.PUT_LINE('Job ID: ' || v_job_id);
+    DBMS_OUTPUT.PUT_LINE('Department ID: ' || v_department_id);
+    DBMS_OUTPUT.PUT_LINE('Salary: Rs.' || v_salary);
 END;
 /
