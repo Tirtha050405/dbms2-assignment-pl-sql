@@ -11,9 +11,7 @@ DECLARE
 BEGIN
     v_before := LENGTH(v_raw);
 
-    -- Replace repeated spaces twice so more than two consecutive spaces are collapsed.
-    v_clean := TRIM(v_raw);
-    v_clean := REPLACE(REPLACE(v_clean, '  ', ' '), '  ', ' ');
+    v_clean := REGEXP_REPLACE(TRIM(v_raw), ' +', ' ');
     v_clean := INITCAP(v_clean);
 
     v_first := SUBSTR(v_clean, 1, INSTR(v_clean, ' ') - 1);
