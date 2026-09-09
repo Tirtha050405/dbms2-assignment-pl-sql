@@ -9,7 +9,7 @@ DECLARE
     v_y NUMBER;
     v_temp NUMBER;
     v_gcd NUMBER;
-    v_num NUMBER := 6;
+    v_perfect_num NUMBER := 6;
     v_sum NUMBER := 0;
     v_fib1 NUMBER := 0;
     v_fib2 NUMBER := 1;
@@ -18,6 +18,7 @@ DECLARE
     v_count NUMBER := 0;
     v_last_fib NUMBER := 0;
     v_i NUMBER;
+    v_num NUMBER;
 BEGIN
     DBMS_OUTPUT.PUT_LINE('===== PART A: FIBONACCI =====');
     v_i := 1;
@@ -98,17 +99,17 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('===== PART E: PERFECT NUMBER =====');
     v_sum := 0;
     v_x := 1;
-    WHILE v_x <= TRUNC(v_num / 2) LOOP
-        IF MOD(v_num, v_x) = 0 THEN
+    WHILE v_x <= TRUNC(v_perfect_num / 2) LOOP
+        IF MOD(v_perfect_num, v_x) = 0 THEN
             v_sum := v_sum + v_x;
         END IF;
         v_x := v_x + 1;
     END LOOP;
 
-    IF v_sum = v_num THEN
-        DBMS_OUTPUT.PUT_LINE(v_num || ' is a Perfect Number');
+    IF v_sum = v_perfect_num THEN
+        DBMS_OUTPUT.PUT_LINE(v_perfect_num || ' is a Perfect Number');
     ELSE
-        DBMS_OUTPUT.PUT_LINE(v_num || ' is Not a Perfect Number');
+        DBMS_OUTPUT.PUT_LINE(v_perfect_num || ' is Not a Perfect Number');
     END IF;
 END;
 /
