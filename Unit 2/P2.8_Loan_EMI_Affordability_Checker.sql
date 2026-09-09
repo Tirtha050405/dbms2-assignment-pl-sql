@@ -19,6 +19,7 @@ BEGIN
     v_monthly_rate := v_annual_rate / 12 / 100;
     v_foir_limit := v_monthly_salary * 0.40;
     v_available_emi := v_foir_limit - v_existing_emi;
+    v_max_loan := v_monthly_salary * 60;
 
     IF v_monthly_rate = 0 THEN
         v_emi := v_loan_amount / v_tenure_months;
@@ -27,47 +28,46 @@ BEGIN
         v_emi := v_loan_amount * v_monthly_rate * v_factor / (v_factor - 1);
     END IF;
 
-    v_approved_amount := v_loan_amount;
-
     IF v_monthly_salary < 25000 THEN
         v_approved_amount := 0;
-    ELSIF v_loan_amount > 60 * v_monthly_salary THEN
-        v_approved_amount := 60 * v_monthly_salary;
+    ELSIF v_loan_amount > v_max_loan THEN
+        v_approved_amount := v_max_loan;
+    ELSE
+        v_approved_amount := v_loan_amount;
     END IF;
 
     v_temp_loan := v_approved_amount;
 
-    IF v_monthly_rate = 0 THEN
-        WHILE v_temp_loan / v_tenure_months > v_available_emi LOOP
-            v_temp_loan := v_temp_loan - 10000;
-            IF v_temp_loan < 0 THEN
-                v_temp_loan := 0;
-                EXIT;
-            END IF;
-        END LOOP;
-    ELSE
-        WHILE v_temp_loan > 0 LOOP
+    WHILE v_temp_loan > 0 LOOP
+        IF v_monthly_rate = 0 THEN
+            v_emi := v_temp_loan / v_tenure_months;
+        ELSE
             v_factor := POWER(1 + v_monthly_rate, v_tenure_months);
             v_emi := v_temp_loan * v_monthly_rate * v_factor / (v_factor - 1);
-            EXIT WHEN v_emi <= v_available_emi;
-            v_temp_loan := v_temp_loan - 10000;
-        END LOOP;
-    END IF;
+        END IF;
+
+        EXIT WHEN v_emi <= v_available_emi;
+        v_temp_loan := v_temp_loan - 10000;
+    END LOOP;
 
     IF v_monthly_salary < 25000 OR v_temp_loan <= 0 THEN
         v_decision := 'REJECTED';
         v_approved_amount := 0;
-    ELSIF v_temp_loan < v_loan_amount THEN
-        v_decision := 'CONDITIONAL';
-        v_approved_amount := v_temp_loan;
     ELSE
-        v_decision := 'APPROVED';
         v_approved_amount := v_temp_loan;
+        v_decision := CASE
+            WHEN v_approved_amount = v_loan_amount THEN 'APPROVED'
+            ELSE 'CONDITIONAL'
+        END;
     END IF;
 
     IF v_approved_amount > 0 THEN
-        v_factor := POWER(1 + v_monthly_rate, v_tenure_months);
-        v_emi := v_approved_amount * v_monthly_rate * v_factor / (v_factor - 1);
+        IF v_monthly_rate = 0 THEN
+            v_emi := v_approved_amount / v_tenure_months;
+        ELSE
+            v_factor := POWER(1 + v_monthly_rate, v_tenure_months);
+            v_emi := v_approved_amount * v_monthly_rate * v_factor / (v_factor - 1);
+        END IF;
     ELSE
         v_emi := 0;
     END IF;
