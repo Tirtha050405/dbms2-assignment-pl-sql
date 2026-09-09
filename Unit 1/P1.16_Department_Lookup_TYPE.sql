@@ -1,7 +1,7 @@
 SET SERVEROUTPUT ON;
 
 DECLARE
-    v_id NUMBER := ((43 + 2) MOD 11 + 1) * 10;
+    v_id NUMBER := (MOD(43 + 2, 11) + 1) * 10;
     v_dname departments.department_name%TYPE;
     v_loc departments.location_id%TYPE;
 BEGIN
